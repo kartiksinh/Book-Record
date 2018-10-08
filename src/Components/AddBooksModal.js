@@ -13,25 +13,25 @@ class AddBooksModal extends Component{
   }
 
   updateTitle = (e) =>{
-    this.setState({name: e.target.value});
+    this.props.updateTitle(e.target.value);
   }
   updateAuthor = (e) =>{
-    this.setState({author: e.target.value});
+    this.props.updateAuthor(e.target.value);
   }
-  updateReadStatus = (e) =>{
-    this.setState({ isRead : e.target.checked}); 
+  updateReadStatus = (e) => {
+    this.props.updateReadStatus(e.target.checked); 
   }
   addBook = ()=> {
-    this.props.addBook(this.state);
+    this.props.addBook(this.props.book);
     this.resetBook();
   }
   resetBook = (e) =>{
     this.setState({
-      name: "",
-      author: "",
+      name : "",
+      author : "",
       isRead : false
     });
-  }
+  } 
 
   render (){
     return (
@@ -42,16 +42,16 @@ class AddBooksModal extends Component{
             
             <FormGroup>
               <Label for="exampleEmail">Book Name</Label>
-              <Input type="email" onChange={this.updateTitle} value={this.state.name} placeholder="Book's Name" />
+              <Input type="email" onChange={this.updateTitle} value={this.props.book.name} placeholder="Book's Name" />
             </FormGroup>
             <FormGroup>
               <Label for="exampleEmail">Author</Label>
-              <Input type="email" onChange={this.updateAuthor} value={this.state.author} placeholder="Author's Name" />
+              <Input type="email" onChange={this.updateAuthor} value={this.props.book.author} placeholder="Author's Name" />
             </FormGroup>
 
             <FormGroup check>
               <Label check>
-                <Input onChange={this.updateReadStatus} type="checkbox" checked={this.state.isRead}/>{' '}
+                <Input onChange={this.updateReadStatus} type="checkbox" checked={this.props.book.isRead}/>{' '}
                 Read?
               </Label>
             </FormGroup>

@@ -29,7 +29,12 @@ class App extends Component {
           author: 'Chetan Bhagat',
           isRead: false,
         }
-      ]
+      ],
+      book: {
+        name: "",
+        author: "",
+        isRead: false
+      }
     }
   }
 
@@ -43,11 +48,47 @@ class App extends Component {
     var books = JSON.parse(JSON.stringify(this.state.books));
     books.unshift(newBook);
     this.setState({
-      books:books,
-      modal : !this.state.modal
+      books,
+      modal : !this.state.modal,
+      book:{
+         name: "",
+         author: "",
+         isRead: false,
+      }
     });
-
   }
+ deleteBook(index) {
+    var books = JSON.parse(JSON.stringify(this.state.books));
+    books.splice(index, 1)
+    this.setState({
+      books
+    });
+  }
+
+  updateBook(val){
+    this.setState({
+      selectedBook: val,
+      modal: !this.state.modal
+    })
+  }
+
+  updateTitle = (title)=>{
+    var book = Object.assign({}, this.state.book);
+    book.name = title;
+    this.setState({book: book});
+  }
+  updateAuthor = (author) =>{
+    var book = Object.assign({}, this.state.book);
+    book.author = author;
+    this.setState({book: book});
+  }
+  updateReadStatus = (isRead) => {
+    var book = Object.assign({}, this.state.book);
+    book.isRead = isRead;
+    this.setState({book: book});
+  }
+
+  
 
   render() {
 
@@ -73,15 +114,15 @@ class App extends Component {
             </thead>
             <tbody>
               {
-                this.state.books.map(function(val, index){
+                this.state.books.map((val, index) => {
                   return(
                     <tr key={index}>
                       <th>{index + 1}</th>
                       <td>{val.name}</td>
                       <td>{val.author}</td>
                       <td>{val.isRead? 'Yes' : 'No'}</td>
-                      <th><Button color="primary">Update </Button>{' '}</th>
-                      <th><Button color="danger">Remove</Button>{' '}</th>
+                      <th><Button color="primary" onClick={()=> {this.updateBook(val)}}>Update </Button>{' '}</th>
+                      <th><Button color="danger" onClick={()=>{this.deleteBook(index)}}>Remove</Button>{' '}</th>
                     </tr>
                     )
                 })
@@ -92,9 +133,14 @@ class App extends Component {
         </div>
 
         <AddBooksModal
-                     isOpen={this.state.modal} 
-                     toggle={this.toggle}
-                     addBook={this.addBook}
+                    isOpen={this.state.modal} 
+                    toggle={this.toggle}
+                    addBook={this.addBook}
+                    selectedBook={this.state.selectedBook}
+                    book={this.state.book}
+                    updateTitle={this.updateTitle}
+                    updateAuthor={this.updateAuthor}
+                    updateReadStatus={this.updateReadStatus}
                    />
       </div>
     );
